@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="address" class="com.xiang.spring.ioc.beans.autowire.Address"
+	p:city="beijing" p:street="shijingshan"></bean>
+	
+	<bean id="car" class="com.xiang.spring.ioc.beans.autowire.Car" 
+	p:brand="Audo" p:price="300000"></bean>
+	
+	<!-- autowire 自动装配 byName 根据名字
+		byType 类型 IOC中类型唯一，有一个以上的同类型bean抛出异常 -->
+	<bean id="person" class="com.xiang.spring.ioc.beans.autowire.Person"
+	p:name="Tom" autowire="byName"></bean>
+	
+	
+
+</beans>

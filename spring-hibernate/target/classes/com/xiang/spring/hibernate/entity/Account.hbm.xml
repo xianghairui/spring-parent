@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-3-21 22:56:52 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping default-access="field" default-lazy="false">
+ <class name="com.xiang.spring.hibernate.entity.Account" table="ACCOUNT">
+  <id name="id" type="java.lang.Integer">
+   <column name="ID"/>
+   <generator class="identity"/>
+  </id>
+  <property generated="never" lazy="false" name="username" type="java.lang.String">
+   <column name="USERNAME"/>
+  </property>
+  <property generated="never" lazy="false" name="balance" type="java.lang.Integer">
+   <column name="BALANCE"/>
+  </property>
+ </class>
+</hibernate-mapping>

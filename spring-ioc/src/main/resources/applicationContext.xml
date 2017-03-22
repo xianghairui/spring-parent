@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!-- 配置bean class: bean 的全类名，通过反射的方式在IOC容器创建bean，所要求Bean中必须有无参数的构造器 id: 
+		标识容器ID唯一 -->
+	<bean id="helloWorld" class="com.xiang.spring.ioc.beans.HelloWorld">
+		<property name="name" value="Spring"></property>
+	</bean>
+
+	<!-- 构造器注入 -->
+	<bean id="car" class="com.xiang.spring.ioc.beans.Car">
+		<constructor-arg value="Audi"></constructor-arg>
+		<constructor-arg value="shanghai"></constructor-arg>
+		<constructor-arg value="20000"></constructor-arg>
+		<constructor-arg value="20"></constructor-arg>
+	</bean>
+	<bean id="car2" class="com.xiang.spring.ioc.beans.Car">
+		<constructor-arg value="Audi" index="0"></constructor-arg>
+		<constructor-arg value="shanghai" index="1"></constructor-arg>
+		<constructor-arg value="20000" index="2"></constructor-arg>
+	</bean>
+	<bean id="car3" class="com.xiang.spring.ioc.beans.Car">
+		<constructor-arg value="Audi" type="java.lang.String"></constructor-arg>
+		<constructor-arg type="java.lang.String">
+			<value><![CDATA[<shanghair^>]]></value><!-- 
+				特殊标记处理 <![CDATA[<shanghair^>]]> -->
+		</constructor-arg>
+		<constructor-arg type="int">
+			<value>250</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="person" class="com.xiang.spring.ioc.beans.Person">
+		<property name="name" value="Tom"></property>
+		<property name="age" value="123"></property>
+		<!-- 可以使用property 的ref 属性简历bean 之间的引用关系 -->
+		<!-- <property name="car" ref="car2"></property> -->
+		<!-- 外部bean -->
+		<!-- <property name="car"> <ref bean="car2"/> </property> -->
+		<!-- 内部bean 不能被外部引用，只能在内部使用 -->
+		<property name="car">
+			<bean class="com.xiang.spring.ioc.beans.Car">
+				<constructor-arg value="Ford"></constructor-arg>
+				<constructor-arg value="changan"></constructor-arg>
+				<constructor-arg value="200000"></constructor-arg>
+			</bean>
+		</property>
+		<!-- 级联属性赋值， 需要先初始化后才可以为级联属性赋值，否则会出现异常， -->
+		<property name="car.maxSpeed" value="260"></property>
+	</bean>
+
+	<bean id="person2" class="com.xiang.spring.ioc.beans.Person">
+		<constructor-arg value="Jerry"></constructor-arg>
+		<constructor-arg value="25"></constructor-arg>
+		<!-- <constructor-arg ><null/></constructor-arg> --><!-- null -->
+		<constructor-arg ref="car2"></constructor-arg>
+		<!-- 为级联属性赋值 -->
+		<property name="car.maxSpeed" value="200"></property>
+	</bean>
+
+	<!-- 测试如何配置集合属性 -->
+	<bean id="person3" class="com.xiang.spring.ioc.beans.collections.Person">
+		<property name="name" value="Mike"></property>
+		<property name="age" value="26"></property>
+		<property name="cars">
+			<list>
+				<ref bean="car" />
+				<ref bean="car2" />
+				<bean class="com.xiang.spring.ioc.beans.Car">
+					<constructor-arg value="FuTe"></constructor-arg>
+					<constructor-arg value="beijing"></constructor-arg>
+					<constructor-arg value="11200"></constructor-arg>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="newPerson" class="com.xiang.spring.ioc.beans.collections.Person2">
+		<constructor-arg value="map"></constructor-arg>
+		<constructor-arg value="24"></constructor-arg>
+		<constructor-arg>
+			<map>
+				<entry key="aa" value-ref="car"></entry>
+				<entry key="bb" value-ref="car2"></entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+
+	<!-- 配置Properties -->
+	<bean id="dataSource" class="com.xiang.spring.ioc.beans.collections.DataSource">
+		<property name="properties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="password">123456</prop>
+				<prop key="jdbcUrl">jdbc:mysql:///test</prop>
+				<prop key="driverClass">com.mysql.jdbc.Driver</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 配置单里的集合bean -->
+	<util:list id="cars">
+		<ref bean="car" />
+		<ref bean="car2" />
+	</util:list>
+
+	<bean id="newPerson2" class="com.xiang.spring.ioc.beans.collections.Person">
+		<property name="name" value="Jack"></property>
+		<property name="age" value="12"></property>
+		<property name="cars" ref="cars"></property>
+	</bean>
+
+	<!-- 通过P命名空间为bean属性赋值，导入P -->
+	<bean id="person5" class="com.xiang.spring.ioc.beans.collections.Person" 
+		p:name="xiang" p:age="12" p:cars-ref="cars">
+	</bean>
+	
+	
+</beans>
